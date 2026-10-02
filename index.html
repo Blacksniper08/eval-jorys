@@ -3,454 +3,974 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codex des Champions - League of Legends (Data Dragon)</title>
-    <!-- Tailwind CSS v3 -->
+    <title>League of Legends - Codex Hextech (Tous les Champions)</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cinzel & Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        lol: {
-                            gold: '#c8aa6d',
-                            darkGold: '#785a28',
+                        hextech: {
+                            gold: '#c8aa6e',
+                            goldLight: '#f0e6d2',
+                            goldDark: '#785a28',
                             blue: '#0ac8b9',
-                            darkBlue: '#091428',
-                            darkerBlue: '#010a13',
-                            cardBg: '#0a1428',
-                            cardBorder: '#1e282d',
-                            hoverGold: '#f0e6d2'
+                            blueDark: '#03979e',
+                            bgDark: '#091428',
+                            cardBg: '#0a0e17',
+                            border: '#30291d',
+                            glass: 'rgba(10, 14, 23, 0.88)'
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        montserrat: ['Montserrat', 'sans-serif']
                     }
                 }
             }
         }
     </script>
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         body {
-            background-color: #010a13;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #091428;
             color: #f0e6d2;
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 50% 0%, #091428 0%, #010a13 70%);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 80% 80%, rgba(200, 170, 110, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
             min-height: 100vh;
         }
-        .lol-scrollbar::-webkit-scrollbar {
+
+        .font-lol {
+            font-family: 'Cinzel', serif;
+        }
+
+        .hextech-card {
+            background: linear-gradient(135deg, rgba(16, 26, 43, 0.9) 0%, rgba(10, 14, 23, 0.95) 100%);
+            border: 1px solid rgba(200, 170, 110, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .hextech-card:hover {
+            transform: translateY(-6px);
+            border-color: #0ac8b9;
+            box-shadow: 0 10px 25px -5px rgba(10, 200, 185, 0.4), 0 0 10px rgba(200, 170, 110, 0.2);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #f0e6d2 0%, #c8aa6e 50%, #785a28 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blue-gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #0ac8b9 60%, #03979e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
-        .lol-scrollbar::-webkit-scrollbar-track {
-            background: #010a13;
+        ::-webkit-scrollbar-track {
+            background: #091428;
         }
-        .lol-scrollbar::-webkit-scrollbar-thumb {
-            background: #785a28;
+        ::-webkit-scrollbar-thumb {
+            background: #1e282d;
+            border: 1px solid #c8aa6e;
             border-radius: 4px;
         }
-        .lol-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #c8aa6d;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0ac8b9;
         }
+
         .glass-panel {
-            background: rgba(10, 20, 40, 0.85);
+            background: rgba(10, 14, 23, 0.88);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(200, 170, 109, 0.2);
+            border: 1px solid rgba(200, 170, 110, 0.3);
+        }
+
+        .btn-hextech {
+            background: linear-gradient(180deg, #1e282d 0%, #091428 100%);
+            border: 1px solid #c8aa6e;
+            color: #c8aa6e;
+            transition: all 0.2s ease;
+        }
+
+        .btn-hextech:hover {
+            background: linear-gradient(180deg, #113a42 0%, #0ac8b9 100%);
+            color: #ffffff;
+            border-color: #0ac8b9;
+            box-shadow: 0 0 15px rgba(10, 200, 185, 0.5);
+        }
+
+        .btn-hextech-active {
+            background: #0ac8b9 !important;
+            color: #091428 !important;
+            font-weight: bold;
+            border-color: #f0e6d2 !important;
+            box-shadow: 0 0 12px rgba(10, 200, 185, 0.6);
+        }
+
+        /* Hextech Loader Spinner */
+        .hex-loader {
+            border: 4px solid rgba(200, 170, 110, 0.2);
+            border-top: 4px solid #0ac8b9;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="lol-scrollbar">
+<body class="flex flex-col min-h-screen">
 
-    <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-lol-darkGold/30 shadow-2xl">
+    <header class="sticky top-0 z-40 glass-panel border-b border-hextech-gold/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilter()">
-                <div class="w-10 h-10 rounded bg-gradient-to-br from-lol-gold to-lol-darkGold flex items-center justify-center shadow-lg border border-lol-gold/50">
-                    <i class="fa-solid fa-shield-halved text-lol-darkerBlue text-xl"></i>
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('champions')">
+                <div class="w-10 h-10 rounded-full border-2 border-hextech-gold flex items-center justify-center bg-hextech-bgDark shadow-[0_0_10px_rgba(200,170,110,0.5)]">
+                    <span class="font-lol font-bold text-hextech-gold text-xl">L</span>
                 </div>
                 <div>
-                    <h1 class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-lol-gold via-lol-hoverGold to-lol-blue bg-clip-text text-transparent">
-                        VALOR OF RUNETERRA
-                    </h1>
-                    <p class="text-xs text-lol-gold/70 uppercase tracking-widest font-semibold">Data Dragon Codex</p>
+                    <h1 class="font-lol font-bold text-xl tracking-widest gold-gradient-text uppercase">Codex Hextech</h1>
+                    <p class="text-[10px] text-hextech-gold/70 tracking-widest uppercase flex items-center gap-1.5">
+                        <span id="version-badge" class="text-hextech-blue font-bold">DataDragon v14.x</span> • Base Intégrale
+                    </p>
                 </div>
             </div>
-            
-            <!-- Search Bar in Header -->
-            <div class="relative w-full max-w-md hidden md:block">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-lol-gold">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" id="searchInput" oninput="filterChampions()" placeholder="Rechercher parmi tous les champions..." 
-                    class="w-full pl-11 pr-4 py-2.5 bg-lol-darkerBlue/80 border border-lol-darkGold/50 rounded-lg text-sm text-lol-hoverGold placeholder-lol-gold/40 focus:outline-none focus:border-lol-gold focus:ring-1 focus:ring-lol-gold transition-all shadow-inner">
-            </div>
 
-            <div class="flex items-center space-x-4">
-                <span id="championCount" class="text-xs px-3 py-1 bg-lol-darkGold/20 border border-lol-darkGold/40 rounded-full text-lol-gold font-medium">
-                    Chargement...
-                </span>
-            </div>
+            <!-- Navigation Tabs -->
+            <nav class="hidden md:flex space-x-2">
+                <button onclick="switchTab('champions')" id="nav-champions" class="btn-hextech px-4 py-2 rounded text-sm font-semibold tracking-wider flex items-center gap-2 btn-hextech-active">
+                    <i class="fa-solid fa-users text-xs"></i> Champions
+                </button>
+                <button onclick="switchTab('compare')" id="nav-compare" class="btn-hextech px-4 py-2 rounded text-sm font-semibold tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-code-compare text-xs"></i> Comparateur <span id="compare-count" class="bg-hextech-gold text-hextech-bgDark text-[10px] px-1.5 rounded-full font-bold">0</span>
+                </button>
+                <button onclick="switchTab('quiz')" id="nav-quiz" class="btn-hextech px-4 py-2 rounded text-sm font-semibold tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad text-xs"></i> Quiz Hextech
+                </button>
+                <button onclick="switchTab('favorites')" id="nav-favorites" class="btn-hextech px-4 py-2 rounded text-sm font-semibold tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-star text-xs"></i> Favoris <span id="fav-count" class="bg-hextech-blue text-hextech-bgDark text-[10px] px-1.5 rounded-full font-bold">0</span>
+                </button>
+            </nav>
+
+            <!-- Mobile Menu Toggle -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-hextech-gold p-2">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-hextech-gold/20 px-4 py-3 space-y-2 bg-hextech-bgDark">
+            <button onclick="switchTab('champions'); toggleMobileMenu();" class="w-full text-left py-2 text-hextech-gold hover:text-hextech-blue font-semibold">
+                <i class="fa-solid fa-users w-6"></i> Champions
+            </button>
+            <button onclick="switchTab('compare'); toggleMobileMenu();" class="w-full text-left py-2 text-hextech-gold hover:text-hextech-blue font-semibold">
+                <i class="fa-solid fa-code-compare w-6"></i> Comparateur
+            </button>
+            <button onclick="switchTab('quiz'); toggleMobileMenu();" class="w-full text-left py-2 text-hextech-gold hover:text-hextech-blue font-semibold">
+                <i class="fa-solid fa-gamepad w-6"></i> Quiz Hextech
+            </button>
+            <button onclick="switchTab('favorites'); toggleMobileMenu();" class="w-full text-left py-2 text-hextech-gold hover:text-hextech-blue font-semibold">
+                <i class="fa-solid fa-star w-6"></i> Favoris
+            </button>
         </div>
     </header>
 
-    <!-- Hero Banner -->
-    <section class="relative py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
-        <div class="absolute inset-0 -z-10 flex items-center justify-center opacity-10 pointer-events-none">
-            <i class="fa-solid fa-gamepad text-[20rem] text-lol-gold"></i>
-        </div>
-        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4">
-            TOUS LES CHAMPIONS DE <span class="text-lol-gold">RUNETERRA</span>
-        </h2>
-        <p class="max-w-2xl mx-auto text-lol-gold/80 text-sm sm:text-base mb-8">
-            Connecté en direct à l'API officielle Riot Games Data Dragon. Explorez l'intégralité du roster, leurs rôles et leurs compétences officielles.
-        </p>
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- Mobile Search Input -->
-        <div class="relative w-full max-w-md mx-auto block md:hidden mb-6">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-lol-gold">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </span>
-            <input type="text" id="mobileSearchInput" oninput="filterChampionsMobile()" placeholder="Rechercher un champion..." 
-                class="w-full pl-11 pr-4 py-3 bg-lol-darkerBlue/90 border border-lol-darkGold/50 rounded-lg text-sm text-lol-hoverGold placeholder-lol-gold/40 focus:outline-none focus:border-lol-gold shadow-lg">
+        <!-- Global Loader Overlay -->
+        <div id="main-loader" class="flex flex-col items-center justify-center py-20 space-y-4">
+            <div class="hex-loader"></div>
+            <p id="loader-text" class="font-lol text-hextech-gold text-lg tracking-wider">Connexion à la matrice DataDragon Riot...</p>
+            <p class="text-xs text-hextech-gold/60">Chargement de l'intégralité des 168+ champions de League of Legends</p>
         </div>
 
-        <!-- Role Filter Buttons -->
-        <div class="flex flex-wrap justify-center gap-2 sm:gap-3" id="roleFilters">
-            <button onclick="filterByRole('Tous')" class="role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-gold text-lol-darkerBlue transition-all shadow-md">Tous</button>
-            <button onclick="filterByRole('Assassin')" class="role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-darkBlue border border-lol-darkGold/40 text-lol-gold hover:bg-lol-darkGold/30 transition-all">Assassin</button>
-            <button onclick="filterByRole('Fighter')" class="role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-darkBlue border border-lol-darkGold/40 text-lol-gold hover:bg-lol-darkGold/30 transition-all">Combattant</button>
-            <button onclick="filterByRole('Mage')" class="role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-darkBlue border border-lol-darkGold/40 text-lol-gold hover:bg-lol-darkGold/30 transition-all">Mage</button>
-            <button onclick="filterByRole('Marksman')" class="role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-darkBlue border border-lol-darkGold/40 text-lol-gold hover:bg-lol-darkGold/30 transition-all">Tireur</button>
-            <button onclick="filterByRole('Support')" class="role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-darkBlue border border-lol-darkGold/40 text-lol-gold hover:bg-lol-darkGold/30 transition-all">Support</button>
-            <button onclick="filterByRole('Tank')" class="role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-darkBlue border border-lol-darkGold/40 text-lol-gold hover:bg-lol-darkGold/30 transition-all">Tank</button>
-        </div>
-    </section>
+        <!-- ================= SECTION 1: CATALOG & SEARCH ================= -->
+        <section id="section-champions" class="hidden space-y-6">
+            <!-- Search & Filters Toolbar -->
+            <div class="glass-panel p-5 rounded-lg border border-hextech-gold/30 shadow-xl space-y-4">
+                <div class="flex flex-col lg:flex-row gap-4 justify-between items-center">
+                    
+                    <!-- Search Input -->
+                    <div class="relative w-full lg:w-80">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-hextech-gold/60"></i>
+                        <input type="text" id="search-input" oninput="filterChampions()" placeholder="Rechercher un champion par nom ou titre..." 
+                               class="w-full bg-hextech-bgDark/80 border border-hextech-gold/40 rounded-md py-2.5 pl-11 pr-4 text-sm text-hextech-goldLight placeholder-hextech-gold/40 focus:outline-none focus:border-hextech-blue focus:ring-1 focus:ring-hextech-blue transition-all">
+                    </div>
 
-    <!-- Loading Spinner -->
-    <div id="loadingIndicator" class="flex flex-col items-center justify-center py-24">
-        <div class="w-16 h-16 border-4 border-lol-gold border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p class="text-lol-gold text-sm font-semibold tracking-wider animate-pulse">Connexion à Data Dragon Riot Games en cours...</p>
-    </div>
+                    <!-- Role Filters -->
+                    <div class="flex flex-wrap gap-1.5 justify-center w-full lg:w-auto">
+                        <button onclick="setRoleFilter('ALL')" class="role-btn btn-hextech btn-hextech-active px-3 py-1.5 rounded text-xs uppercase tracking-wider" data-role="ALL">Tous</button>
+                        <button onclick="setRoleFilter('Assassin')" class="role-btn btn-hextech px-3 py-1.5 rounded text-xs uppercase tracking-wider" data-role="Assassin">Assassin</button>
+                        <button onclick="setRoleFilter('Fighter')" class="role-btn btn-hextech px-3 py-1.5 rounded text-xs uppercase tracking-wider" data-role="Fighter">Combattant</button>
+                        <button onclick="setRoleFilter('Mage')" class="role-btn btn-hextech px-3 py-1.5 rounded text-xs uppercase tracking-wider" data-role="Mage">Mage</button>
+                        <button onclick="setRoleFilter('Marksman')" class="role-btn btn-hextech px-3 py-1.5 rounded text-xs uppercase tracking-wider" data-role="Marksman">Tireur</button>
+                        <button onclick="setRoleFilter('Support')" class="role-btn btn-hextech px-3 py-1.5 rounded text-xs uppercase tracking-wider" data-role="Support">Support</button>
+                        <button onclick="setRoleFilter('Tank')" class="role-btn btn-hextech px-3 py-1.5 rounded text-xs uppercase tracking-wider" data-role="Tank">Tank</button>
+                    </div>
 
-    <!-- Champions Grid Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div id="noResults" class="hidden text-center py-16">
-            <div class="text-lol-gold text-5xl mb-4"><i class="fa-solid fa-ghost"></i></div>
-            <h3 class="text-xl font-bold text-white">Aucun champion trouvé</h3>
-            <p class="text-sm text-lol-gold/60 mt-1">Vérifiez l'orthographe ou essayez un autre filtre.</p>
-        </div>
+                    <!-- Filters & Sort -->
+                    <div class="flex items-center gap-3 w-full lg:w-auto justify-end">
+                        <div>
+                            <select id="diff-select" onchange="filterChampions()" class="bg-hextech-bgDark border border-hextech-gold/40 rounded px-3 py-2 text-xs text-hextech-goldLight focus:outline-none focus:border-hextech-blue">
+                                <option value="ALL">Difficulté (Toutes)</option>
+                                <option value="EASY">Facile (1-3)</option>
+                                <option value="MEDIUM">Moyenne (4-7)</option>
+                                <option value="HARD">Élevée (8-10)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="sort-select" onchange="filterChampions()" class="bg-hextech-bgDark border border-hextech-gold/40 rounded px-3 py-2 text-xs text-hextech-goldLight focus:outline-none focus:border-hextech-blue">
+                                <option value="name-asc">Nom (A-Z)</option>
+                                <option value="name-desc">Nom (Z-A)</option>
+                                <option value="diff-asc">Difficulté (Croissante)</option>
+                                <option value="diff-desc">Difficulté (Décroissante)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="championGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            <!-- Dynamically populated from API -->
-        </div>
+                <!-- Total Count Badge -->
+                <div class="flex justify-between items-center pt-2 border-t border-hextech-gold/10 text-xs text-hextech-gold/70">
+                    <span>Statut: <strong class="text-hextech-blue">Indexation Complète</strong></span>
+                    <span id="champ-count-badge" class="font-bold text-hextech-gold">Chargement des champions...</span>
+                </div>
+            </div>
+
+            <!-- Champion Grid -->
+            <div id="champion-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Dynamic Champion Cards -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-16 glass-panel rounded-lg">
+                <i class="fa-solid fa-shield-cat text-5xl text-hextech-gold/40 mb-3"></i>
+                <p class="font-lol text-xl text-hextech-gold">Aucun champion ne correspond à vos critères.</p>
+                <p class="text-sm text-hextech-gold/60 mt-1">Essayez de réinitialiser la recherche ou les filtres.</p>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: COMPARATOR ================= -->
+        <section id="section-compare" class="hidden space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="font-lol text-2xl sm:text-3xl font-bold gold-gradient-text uppercase">Comparateur de Champions</h2>
+                <p class="text-xs sm:text-sm text-hextech-gold/70">Mettez côte à côte deux champions pour comparer leurs statistiques et compétences.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Slot Champion 1 -->
+                <div id="compare-slot-0" class="glass-panel p-6 rounded-lg border border-hextech-gold/30 flex flex-col items-center min-h-[420px] justify-center">
+                    <!-- Populated dynamically -->
+                </div>
+                <!-- Slot Champion 2 -->
+                <div id="compare-slot-1" class="glass-panel p-6 rounded-lg border border-hextech-gold/30 flex flex-col items-center min-h-[420px] justify-center">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: QUIZ HEXTECH ================= -->
+        <section id="section-quiz" class="hidden space-y-6 max-w-2xl mx-auto">
+            <div class="text-center space-y-2">
+                <h2 class="font-lol text-2xl sm:text-3xl font-bold blue-gradient-text uppercase">Quiz Académie Hextech</h2>
+                <p class="text-xs sm:text-sm text-hextech-gold/70">Testez vos connaissances sur l'ensemble des 168+ champions !</p>
+            </div>
+
+            <div class="glass-panel p-6 sm:p-8 rounded-lg border border-hextech-gold/40 shadow-2xl space-y-6 relative overflow-hidden">
+                <div class="flex justify-between items-center border-b border-hextech-gold/20 pb-4">
+                    <span class="text-xs text-hextech-gold font-semibold uppercase tracking-wider">Score : <span id="quiz-score" class="text-hextech-blue font-bold text-base">0</span></span>
+                    <span class="text-xs text-hextech-gold font-semibold uppercase tracking-wider">Série : <span id="quiz-streak" class="text-hextech-gold font-bold text-base">0 ??</span></span>
+                </div>
+
+                <div id="quiz-card-content" class="space-y-6">
+                    <!-- Quiz question injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: FAVORITES ================= -->
+        <section id="section-favorites" class="hidden space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="font-lol text-2xl sm:text-3xl font-bold gold-gradient-text uppercase">Vos Champions Favoris</h2>
+                <p class="text-xs sm:text-sm text-hextech-gold/70">Vos champions enregistrés dans le sanctuaire Hextech.</p>
+            </div>
+
+            <div id="favorites-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Favorite cards -->
+            </div>
+
+            <div id="favorites-empty" class="hidden text-center py-16 glass-panel rounded-lg">
+                <i class="fa-regular fa-star text-5xl text-hextech-gold/40 mb-3"></i>
+                <p class="font-lol text-xl text-hextech-gold">Aucun champion en favori pour le moment.</p>
+                <p class="text-sm text-hextech-gold/60 mt-1">Cliquez sur l'étoile en haut d'une carte de champion pour l'ajouter ici.</p>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Champion Detail Modal -->
-    <div id="championModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
-        <div id="modalContent" class="bg-lol-darkerBlue border border-lol-gold/50 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto lol-scrollbar shadow-2xl transform scale-95 transition-all duration-300 relative">
-            <!-- Modal Header with Splash Art -->
-            <div id="modalHeaderBg" class="relative h-72 sm:h-80 bg-cover bg-center overflow-hidden rounded-t-2xl">
-                <div class="absolute inset-0 bg-gradient-to-t from-lol-darkerBlue via-lol-darkerBlue/50 to-transparent"></div>
-                <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-lol-darkerBlue/80 border border-lol-gold/40 text-lol-gold flex items-center justify-center hover:bg-lol-gold hover:text-lol-darkerBlue transition-all shadow-lg">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-                <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                    <div>
-                        <span id="modalChampionRole" class="px-3 py-1 bg-lol-gold/20 border border-lol-gold/50 text-lol-gold text-xs font-bold rounded-full uppercase tracking-widest"></span>
-                        <h2 id="modalChampionName" class="text-3xl sm:text-4xl font-black text-white mt-2 drop-shadow-md"></h2>
-                        <p id="modalChampionTitle" class="text-lol-gold/90 text-sm font-medium italic mt-0.5 capitalize"></p>
-                    </div>
-                </div>
-            </div>
+    <!-- ================= CHAMPION DETAILS MODAL ================= -->
+    <div id="champion-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex justify-center items-center p-2 sm:p-4 transition-all opacity-0">
+        <div class="relative w-full max-w-4xl max-h-[92vh] glass-panel border-2 border-hextech-gold/60 rounded-lg overflow-y-auto flex flex-col shadow-[0_0_50px_rgba(10,200,185,0.2)]">
+            
+            <!-- Modal Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-20 w-9 h-9 bg-hextech-bgDark/80 border border-hextech-gold text-hextech-gold hover:text-white hover:border-hextech-blue rounded-full flex items-center justify-center transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
 
-            <!-- Modal Body -->
-            <div class="p-6 sm:p-8 space-y-6">
-                <!-- Lore / Description -->
-                <div>
-                    <h3 class="text-xs font-bold text-lol-gold uppercase tracking-widest mb-2 flex items-center">
-                        <i class="fa-solid fa-book-open mr-2"></i> Biographie
-                    </h3>
-                    <p id="modalChampionLore" class="text-sm text-lol-hoverGold/80 leading-relaxed bg-lol-cardBg p-4 rounded-xl border border-lol-cardBorder"></p>
-                </div>
-
-                <!-- Abilities Section -->
-                <div>
-                    <h3 class="text-xs font-bold text-lol-gold uppercase tracking-widest mb-4 flex items-center">
-                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Compétences & Sorts officiels
-                    </h3>
-                    <!-- Ability Tabs Selector -->
-                    <div id="abilityTabs" class="grid grid-cols-5 gap-2 mb-4">
-                        <!-- Populated dynamically -->
-                    </div>
-                    <!-- Selected Ability Detail Card -->
-                    <div id="abilityDetailCard" class="bg-lol-cardBg p-5 rounded-xl border border-lol-gold/30 shadow-inner">
-                        <!-- Populated dynamically -->
-                    </div>
-                </div>
+            <!-- Modal Content (Dynamic Data Dragon) -->
+            <div id="modal-content" class="w-full min-h-[400px] flex items-center justify-center">
+                <!-- Populated via JavaScript -->
             </div>
         </div>
     </div>
 
-    <!-- JavaScript Data Dragon Client -->
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none glass-panel border border-hextech-blue text-hextech-goldLight px-5 py-3 rounded-md shadow-2xl flex items-center gap-3">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-hextech-blue text-lg"></i>
+        <span id="toast-msg" class="text-sm font-semibold">Action effectuée</span>
+    </div>
+
     <script>
-        let allChampions = [];
-        let currentFilteredChampions = [];
-        let selectedRole = "Tous";
-        let latestVersion = "14.3.1"; // Fallback version
-        let ddragonCdn = "https://ddragon.leagueoflegends.com";
+        /* Application Configuration & State */
+        const CONFIG = {
+            defaultVersion: '14.5.1',
+            lang: 'fr_FR',
+            baseUrl: 'https://ddragon.leagueoflegends.com'
+        };
 
-        // Fetch latest version & champion list from Riot Data Dragon API
-        async function initDataDragon() {
+        let appState = {
+            version: CONFIG.defaultVersion,
+            allChampions: [], // List of summary objects for all 168+ champions
+            detailsCache: {}, // Detailed cache per champion ID
+            activeRole: 'ALL',
+            searchQuery: '',
+            diffFilter: 'ALL',
+            sortBy: 'name-asc',
+            favorites: JSON.parse(localStorage.getItem('hextech_favs_v2') || '[]'),
+            compareSlots: [null, null],
+            quiz: {
+                currentQuestion: null,
+                score: 0,
+                streak: 0,
+                answered: false
+            }
+        };
+
+        // Initialize Application
+        window.onload = async function() {
+            await initializeDataDragon();
+            updateFavCount();
+            updateCompareSlots();
+        };
+
+        /* Step 1: Fetch Latest Version and All Champions List */
+        async function initializeDataDragon() {
+            const loaderText = document.getElementById('loader-text');
             try {
-                // 1. Get latest version
-                const versionRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
-                const versions = await versionRes.json();
-                latestVersion = versions[0];
+                // Fetch latest DataDragon version
+                loaderText.textContent = "Obtention de la version actuelle de DataDragon...";
+                const versionsResp = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+                if (versionsResp.ok) {
+                    const versions = await versionsResp.json();
+                    appState.version = versions[0] || CONFIG.defaultVersion;
+                    document.getElementById('version-badge').textContent = `Patch v${appState.version}`;
+                }
 
-                // 2. Get champion list in French
-                const champRes = await fetch(`${ddragonCdn}/cdn/${latestVersion}/data/fr_FR/champion.json`);
-                const champData = await champRes.json();
+                // Fetch Exhaustive List of ALL Champions
+                loaderText.textContent = `Chargement des 168+ champions (Patch ${appState.version})...`;
+                const champsResp = await fetch(`${CONFIG.baseUrl}/cdn/${appState.version}/data/${CONFIG.lang}/champion.json`);
                 
-                // Convert object to array
-                allChampions = Object.values(champData.data);
-                currentFilteredChampions = [...allChampions];
+                if (!champsResp.ok) throw new Error("Échec du chargement des données Riot.");
 
-                document.getElementById('loadingIndicator').style.display = 'none';
-                renderChampions(currentFilteredChampions);
+                const data = await champsResp.json();
+                appState.allChampions = Object.values(data.data);
+
+                // Hide Loader & Display Main Catalog
+                document.getElementById('main-loader').classList.add('hidden');
+                document.getElementById('section-champions').classList.remove('hidden');
+
+                // Render catalog
+                filterChampions();
+
             } catch (error) {
-                console.error("Erreur de chargement Data Dragon:", error);
-                document.getElementById('loadingIndicator').innerHTML = `
-                    <div class="text-center text-red-400">
-                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
-                        <p class="text-sm">Impossible de joindre l'API Data Dragon de Riot Games.</p>
-                        <p class="text-xs text-lol-gold/60 mt-1">Veuillez vérifier votre connexion Internet.</p>
-                    </div>
-                `;
+                console.error("Error initializing DataDragon:", error);
+                loaderText.textContent = "Erreur de connexion. Chargement du mode secours...";
+                showToast("Erreur de connexion au serveur Riot DataDragon.");
             }
         }
 
-        // Render Champion Cards
-        function renderChampions(data) {
-            const grid = document.getElementById('championGrid');
-            const noResults = document.getElementById('noResults');
-            const countTag = document.getElementById('championCount');
-            
-            grid.innerHTML = '';
-            countTag.textContent = `${data.length} Champions`;
+        // Toggle Mobile Navigation
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
 
-            if (data.length === 0) {
-                noResults.classList.remove('hidden');
-                return;
-            } else {
-                noResults.classList.add('hidden');
-            }
-
-            data.forEach((champ, index) => {
-                const card = document.createElement('div');
-                card.className = "group relative bg-lol-cardBg border border-lol-cardBorder rounded-xl overflow-hidden shadow-xl hover:border-lol-gold transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col";
-                card.onclick = () => openChampionModal(champ.id);
-
-                const iconUrl = `${ddragonCdn}/cdn/${latestVersion}/img/champion/${champ.image.full}`;
-                const primaryRole = champ.tags[0] || 'Inconnu';
-
-                card.innerHTML = `
-                    <div class="relative h-64 overflow-hidden bg-lol-darkerBlue">
-                        <img src="${iconUrl}" alt="${champ.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-90 group-hover:opacity-100" loading="lazy" onerror="this.src='https://placehold.co/400x500/0a1428/c8aa6d?text=LoL'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-lol-darkerBlue via-transparent to-transparent"></div>
-                        <span class="absolute top-3 right-3 px-2.5 py-1 bg-lol-darkerBlue/80 backdrop-blur-md border border-lol-darkGold/50 text-lol-gold text-[10px] font-bold rounded-md uppercase tracking-wider">
-                            ${primaryRole}
-                        </span>
-                    </div>
-                    <div class="p-4 flex flex-col flex-grow justify-between bg-gradient-to-b from-lol-cardBg to-lol-darkerBlue">
-                        <div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-lol-gold transition-colors">${champ.name}</h3>
-                            <p class="text-xs text-lol-gold/70 italic mt-0.5 line-clamp-1">${champ.title}</p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-lol-cardBorder flex items-center justify-between text-xs text-lol-gold/80 font-semibold">
-                            <span>Voir les sorts</span>
-                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
+        // Tab Switching Logic
+        function switchTab(tab) {
+            ['champions', 'compare', 'quiz', 'favorites'].forEach(t => {
+                const section = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`nav-${t}`);
+                if (section) {
+                    if (t === tab) {
+                        section.classList.remove('hidden');
+                        if (btn) btn.classList.add('btn-hextech-active');
+                    } else {
+                        section.classList.add('hidden');
+                        if (btn) btn.classList.remove('btn-hextech-active');
+                    }
+                }
             });
+
+            if (tab === 'favorites') renderFavorites();
+            if (tab === 'quiz' && !appState.quiz.currentQuestion) initQuizQuestion();
         }
 
-        // Search Handlers
-        function filterChampions() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            document.getElementById('mobileSearchInput').value = query;
-            applyFilters(query);
-        }
-
-        function filterChampionsMobile() {
-            const query = document.getElementById('mobileSearchInput').value.toLowerCase().trim();
-            document.getElementById('searchInput').value = query;
-            applyFilters(query);
-        }
-
-        // Role Filter Handlers
-        function filterByRole(role) {
-            selectedRole = role;
-            
+        // Role Filter Setter
+        function setRoleFilter(role) {
+            appState.activeRole = role;
             document.querySelectorAll('.role-btn').forEach(btn => {
-                const btnText = btn.textContent.trim();
-                // Map French labels to Riot API English tags if needed
-                let matches = false;
-                if (role === 'Tous' && btnText === 'Tous') matches = true;
-                if (role === 'Fighter' && btnText === 'Combattant') matches = true;
-                if (role === 'Marksman' && btnText === 'Tireur') matches = true;
-                if (btnText.toLowerCase() === role.toLowerCase()) matches = true;
-
-                if (matches) {
-                    btn.className = "role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-gold text-lol-darkerBlue transition-all shadow-md";
+                if (btn.dataset.role === role) {
+                    btn.classList.add('btn-hextech-active');
                 } else {
-                    btn.className = "role-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-lol-darkBlue border border-lol-darkGold/40 text-lol-gold hover:bg-lol-darkGold/30 transition-all";
+                    btn.classList.remove('btn-hextech-active');
                 }
             });
-
-            const currentQuery = document.getElementById('searchInput').value.toLowerCase().trim();
-            applyFilters(currentQuery);
+            filterChampions();
         }
 
-        function applyFilters(query) {
-            currentFilteredChampions = allChampions.filter(champ => {
-                const matchesRole = (selectedRole === 'Tous' || champ.tags.includes(selectedRole));
-                const matchesQuery = champ.name.toLowerCase().includes(query) || 
-                                     champ.title.toLowerCase().includes(query) ||
-                                     champ.id.toLowerCase().includes(query);
-                return matchesRole && matchesQuery;
+        // Filter and Render Champions Grid
+        function filterChampions() {
+            appState.searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            appState.diffFilter = document.getElementById('diff-select').value;
+            appState.sortBy = document.getElementById('sort-select').value;
+
+            let filtered = appState.allChampions.filter(champ => {
+                const nameMatches = champ.name.toLowerCase().includes(appState.searchQuery) || 
+                                    champ.title.toLowerCase().includes(appState.searchQuery) ||
+                                    champ.id.toLowerCase().includes(appState.searchQuery);
+                
+                const roleMatches = appState.activeRole === 'ALL' || champ.tags.includes(appState.activeRole);
+                
+                let diffMatches = true;
+                const diff = champ.info ? champ.info.difficulty : 5;
+                if (appState.diffFilter === 'EASY') diffMatches = diff <= 3;
+                if (appState.diffFilter === 'MEDIUM') diffMatches = diff >= 4 && diff <= 7;
+                if (appState.diffFilter === 'HARD') diffMatches = diff >= 8;
+
+                return nameMatches && roleMatches && diffMatches;
             });
-            renderChampions(currentFilteredChampions);
+
+            // Sorting
+            filtered.sort((a, b) => {
+                if (appState.sortBy === 'name-asc') return a.name.localeCompare(b.name);
+                if (appState.sortBy === 'name-desc') return b.name.localeCompare(a.name);
+                if (appState.sortBy === 'diff-asc') return (a.info?.difficulty || 0) - (b.info?.difficulty || 0);
+                if (appState.sortBy === 'diff-desc') return (b.info?.difficulty || 0) - (a.info?.difficulty || 0);
+                return 0;
+            });
+
+            renderChampions(filtered);
         }
 
-        function resetFilter() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('mobileSearchInput').value = '';
-            filterByRole('Tous');
-        }
+        // Render Champions Grid
+        function renderChampions(list) {
+            const grid = document.getElementById('champion-grid');
+            const empty = document.getElementById('empty-state');
+            const badge = document.getElementById('champ-count-badge');
 
-        // Detailed Champion Modal with Full API Data
-        let activeChampionDetail = null;
-        let activeAbilityIndex = 0;
+            badge.textContent = `${list.length} / ${appState.allChampions.length} champions trouvés`;
 
-        async function openChampionModal(championId) {
-            try {
-                // Fetch full detailed champion JSON from Data Dragon
-                const res = await fetch(`${ddragonCdn}/cdn/${latestVersion}/data/fr_FR/champion/${championId}.json`);
-                const detailData = await res.json();
-                activeChampionDetail = detailData.data[championId];
-                activeAbilityIndex = 0;
-
-                // Splash art URL
-                const splashUrl = `${ddragonCdn}/cdn/img/champion/splash/${championId}_0.jpg`;
-                document.getElementById('modalHeaderBg').style.backgroundImage = `url('${splashUrl}')`;
-                document.getElementById('modalChampionName').textContent = activeChampionDetail.name;
-                document.getElementById('modalChampionTitle').textContent = activeChampionDetail.title;
-                document.getElementById('modalChampionRole').textContent = activeChampionDetail.tags.join(' / ');
-                document.getElementById('modalChampionLore').textContent = activeChampionDetail.lore;
-
-                renderAbilityTabs();
-                renderAbilityDetail(0);
-
-                const modal = document.getElementById('championModal');
-                const content = document.getElementById('modalContent');
-                modal.classList.remove('opacity-0', 'pointer-events-none');
-                content.classList.remove('scale-95');
-                document.body.style.overflow = 'hidden';
-            } catch (err) {
-                console.error("Erreur de chargement des détails du champion:", err);
+            if (list.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
             }
-        }
 
-        function closeModal() {
-            const modal = document.getElementById('championModal');
-            const content = document.getElementById('modalContent');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            content.classList.add('scale-95');
-            document.body.style.overflow = 'auto';
-        }
+            empty.classList.add('hidden');
+            grid.innerHTML = list.map(champ => {
+                const isFav = appState.favorites.includes(champ.id);
+                const iconUrl = `${CONFIG.baseUrl}/cdn/${appState.version}/img/champion/${champ.image.full}`;
+                const mainRole = champ.tags[0] || 'Inconnu';
+                const diffRating = champ.info ? champ.info.difficulty : 5;
 
-        function renderAbilityTabs() {
-            const tabsContainer = document.getElementById('abilityTabs');
-            tabsContainer.innerHTML = '';
+                return `
+                    <div class="hextech-card rounded-lg overflow-hidden group cursor-pointer relative flex flex-col" onclick="openModal('${champ.id}')">
+                        <!-- Top Actions -->
+                        <button onclick="event.stopPropagation(); toggleFavorite('${champ.id}')" 
+                                class="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-hextech-bgDark/80 border border-hextech-gold/40 flex items-center justify-center text-xs transition-all hover:scale-110 ${isFav ? 'text-amber-400 border-amber-400' : 'text-hextech-gold/50'}">
+                            <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+                        </button>
 
-            // Abilities array: Passive (0) + Spells Q, W, E, R (1, 2, 3, 4)
-            const abilitiesList = [
-                { type: 'P', data: activeChampionDetail.passive, key: 'Passif' },
-                { type: 'A', data: activeChampionDetail.spells[0], key: 'A' },
-                { type: 'Z', data: activeChampionDetail.spells[1], key: 'Z' },
-                { type: 'E', data: activeChampionDetail.spells[2], key: 'E' },
-                { type: 'R', data: activeChampionDetail.spells[3], key: 'R' }
-            ];
+                        <!-- Avatar / Image Container -->
+                        <div class="relative overflow-hidden aspect-[4/5] bg-hextech-bgDark">
+                            <img src="${iconUrl}" alt="${champ.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='https://placehold.co/120x120/091428/c8aa6e?text=${champ.name}'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-hextech-cardBg via-transparent to-transparent opacity-80"></div>
+                            
+                            <!-- Role Badge -->
+                            <span class="absolute bottom-2 left-2 text-[10px] uppercase tracking-widest font-bold bg-hextech-bgDark/90 border border-hextech-blue/50 text-hextech-blue px-2 py-0.5 rounded">
+                                ${mainRole}
+                            </span>
+                        </div>
 
-            abilitiesList.forEach((item, idx) => {
-                if (!item.data) return;
-                const isSelected = (idx === activeAbilityIndex);
-                const tabBtn = document.createElement('button');
-                tabBtn.className = `py-2 px-1 rounded-xl text-xs font-bold uppercase transition-all flex flex-col items-center justify-center border ${
-                    isSelected 
-                        ? 'bg-lol-gold text-lol-darkerBlue border-lol-gold shadow-lg font-extrabold scale-105' 
-                        : 'bg-lol-darkerBlue/80 text-lol-gold/80 border-lol-cardBorder hover:border-lol-gold/50'
-                }`;
-                tabBtn.onclick = () => {
-                    activeAbilityIndex = idx;
-                    renderAbilityTabs();
-                    renderAbilityDetail(idx);
-                };
-
-                let imgUrl = '';
-                if (idx === 0) {
-                    imgUrl = `${ddragonCdn}/cdn/${latestVersion}/img/passive/${item.data.image.full}`;
-                } else {
-                    imgUrl = `${ddragonCdn}/cdn/${latestVersion}/img/spell/${item.data.image.full}`;
-                }
-
-                tabBtn.innerHTML = `
-                    <span class="text-[10px] opacity-75 mb-0.5">${item.key}</span>
-                    <img src="${imgUrl}" alt="sort" class="w-7 h-7 rounded object-cover border border-lol-gold/30" onerror="this.src='https://placehold.co/32x32/0a1428/c8aa6d?text=LoL'">
+                        <!-- Card Header / Info -->
+                        <div class="p-3 flex-grow flex flex-col justify-between border-t border-hextech-gold/20">
+                            <div>
+                                <h3 class="font-lol font-bold text-base text-hextech-goldLight group-hover:text-hextech-blue transition-colors">${champ.name}</h3>
+                                <p class="text-[11px] text-hextech-gold/70 truncate italic capitalize">${champ.title}</p>
+                            </div>
+                            
+                            <div class="mt-3 flex justify-between items-center text-[10px] text-hextech-gold/50">
+                                <span>Diff. ${diffRating}/10</span>
+                                <span class="text-hextech-gold font-bold"><i class="fa-solid fa-bolt text-hextech-blue"></i> Hextech</span>
+                            </div>
+                        </div>
+                    </div>
                 `;
-                tabsContainer.appendChild(tabBtn);
-            });
+            }).join('');
         }
 
-        function renderAbilityDetail(idx) {
-            const abilitiesList = [
-                { type: 'Passif', data: activeChampionDetail.passive, key: 'Passif' },
-                { type: 'Sort A', data: activeChampionDetail.spells[0], key: 'A' },
-                { type: 'Sort Z', data: activeChampionDetail.spells[1], key: 'Z' },
-                { type: 'Sort E', data: activeChampionDetail.spells[2], key: 'E' },
-                { type: 'Ultime R', data: activeChampionDetail.spells[3], key: 'R' }
-            ];
-
-            const item = abilitiesList[idx];
-            if (!item || !item.data) return;
-
-            let imgUrl = '';
-            if (idx === 0) {
-                imgUrl = `${ddragonCdn}/cdn/${latestVersion}/img/passive/${item.data.image.full}`;
-            } else {
-                imgUrl = `${ddragonCdn}/cdn/${latestVersion}/img/spell/${item.data.image.full}`;
+        /* Step 2: Fetch Champion Specific Detail JSON Dynamically */
+        async function fetchChampionDetails(champId) {
+            if (appState.detailsCache[champId]) {
+                return appState.detailsCache[champId];
             }
 
-            const detailCard = document.getElementById('abilityDetailCard');
-            detailCard.innerHTML = `
-                <div class="flex items-center space-x-3 mb-3">
-                    <img src="${imgUrl}" alt="icon" class="w-12 h-12 rounded-lg border border-lol-gold/50 object-cover shadow-md" onerror="this.src='https://placehold.co/48x48/0a1428/c8aa6d?text=LoL'">
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs px-2 py-0.5 bg-lol-gold/20 text-lol-gold font-bold rounded">${item.type}</span>
-                            <h4 class="text-base font-bold text-white">${item.data.name}</h4>
+            try {
+                const resp = await fetch(`${CONFIG.baseUrl}/cdn/${appState.version}/data/${CONFIG.lang}/champion/${champId}.json`);
+                if (!resp.ok) throw new Error("Erreur de chargement du détail.");
+                const data = await resp.json();
+                const detailedChamp = data.data[champId];
+                appState.detailsCache[champId] = detailedChamp;
+                return detailedChamp;
+            } catch (err) {
+                console.error("Failed to load details for", champId, err);
+                return null;
+            }
+        }
+
+        // Open Detailed Champion Modal
+        async function openModal(id) {
+            const modal = document.getElementById('champion-modal');
+            const content = document.getElementById('modal-content');
+
+            // Show loading inside modal
+            content.innerHTML = `
+                <div class="flex flex-col items-center justify-center p-12 space-y-3">
+                    <div class="hex-loader"></div>
+                    <p class="font-lol text-hextech-gold text-sm">Téléchargement des données complètes de ${id}...</p>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+
+            const champ = await fetchChampionDetails(id);
+
+            if (!champ) {
+                content.innerHTML = `
+                    <div class="p-8 text-center text-red-400">
+                        <p class="font-bold">Impossible de charger les détails de ce champion.</p>
+                        <button onclick="closeModal()" class="mt-4 btn-hextech px-4 py-2 rounded text-xs">Fermer</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const splashUrl = `${CONFIG.baseUrl}/cdn/img/champion/splash/${champ.id}_0.jpg`;
+            const passiveIcon = `${CONFIG.baseUrl}/cdn/${appState.version}/img/passive/${champ.passive.image.full}`;
+
+            content.innerHTML = `
+                <!-- Header Splash Banner -->
+                <div class="relative h-64 sm:h-80 w-full overflow-hidden border-b border-hextech-gold/40">
+                    <img src="${splashUrl}" alt="${champ.name}" class="w-full h-full object-cover object-top">
+                    <div class="absolute inset-0 bg-gradient-to-t from-hextech-cardBg via-hextech-cardBg/60 to-transparent"></div>
+                    
+                    <div class="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-hextech-blue bg-hextech-bgDark/80 px-2.5 py-1 rounded border border-hextech-blue/40">
+                                ${champ.tags.join(' • ')}
+                            </span>
+                            <h2 class="font-lol text-3xl sm:text-5xl font-extrabold gold-gradient-text uppercase mt-2">${champ.name}</h2>
+                            <p class="text-sm sm:text-base text-hextech-goldLight/80 italic font-medium capitalize">${champ.title}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="addToCompare('${champ.id}')" class="btn-hextech px-3 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5">
+                                <i class="fa-solid fa-code-compare"></i> Comparer
+                            </button>
                         </div>
                     </div>
                 </div>
-                <p class="text-sm text-lol-hoverGold/90 leading-relaxed pl-1">${item.data.description}</p>
+
+                <div class="p-6 space-y-8">
+                    <!-- Lore Section -->
+                    <div class="space-y-2">
+                        <h3 class="font-lol text-lg font-bold text-hextech-gold border-b border-hextech-gold/20 pb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-book-bookmark text-hextech-blue text-sm"></i> Lore & Biographies
+                        </h3>
+                        <p class="text-xs sm:text-sm text-hextech-goldLight/90 leading-relaxed italic bg-hextech-bgDark/50 p-4 rounded border border-hextech-gold/20">
+                            "${champ.lore}"
+                        </p>
+                    </div>
+
+                    <!-- Base Stats Grid -->
+                    <div class="space-y-3">
+                        <h3 class="font-lol text-lg font-bold text-hextech-gold border-b border-hextech-gold/20 pb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-simple text-hextech-blue text-sm"></i> Statistiques de Base
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+                            <div class="bg-hextech-bgDark/80 p-2.5 rounded border border-hextech-gold/20">
+                                <span class="text-[10px] text-hextech-gold/60 uppercase block font-semibold">Points de Vie</span>
+                                <span class="text-sm font-bold text-emerald-400">${champ.stats.hp} (+${champ.stats.hpperlevel}/niv)</span>
+                            </div>
+                            <div class="bg-hextech-bgDark/80 p-2.5 rounded border border-hextech-gold/20">
+                                <span class="text-[10px] text-hextech-gold/60 uppercase block font-semibold">Attaque</span>
+                                <span class="text-sm font-bold text-amber-400">${champ.stats.attackdamage} (+${champ.stats.attackdamageperlevel})</span>
+                            </div>
+                            <div class="bg-hextech-bgDark/80 p-2.5 rounded border border-hextech-gold/20">
+                                <span class="text-[10px] text-hextech-gold/60 uppercase block font-semibold">Armure</span>
+                                <span class="text-sm font-bold text-blue-400">${champ.stats.armor} (+${champ.stats.armorperlevel})</span>
+                            </div>
+                            <div class="bg-hextech-bgDark/80 p-2.5 rounded border border-hextech-gold/20">
+                                <span class="text-[10px] text-hextech-gold/60 uppercase block font-semibold">Vitesse</span>
+                                <span class="text-sm font-bold text-teal-400">${champ.stats.movespeed}</span>
+                            </div>
+                            <div class="bg-hextech-bgDark/80 p-2.5 rounded border border-hextech-gold/20">
+                                <span class="text-[10px] text-hextech-gold/60 uppercase block font-semibold">Portée</span>
+                                <span class="text-sm font-bold text-purple-400">${champ.stats.attackrange}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spells / Abilities List -->
+                    <div class="space-y-4">
+                        <h3 class="font-lol text-lg font-bold text-hextech-gold border-b border-hextech-gold/20 pb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-hextech-blue text-sm"></i> Compétences Officiel DataDragon
+                        </h3>
+
+                        <div class="space-y-3">
+                            <!-- Passive -->
+                            <div class="flex flex-col sm:flex-row gap-4 p-3.5 bg-hextech-bgDark/60 rounded border border-hextech-gold/20">
+                                <div class="flex items-center gap-3 sm:w-48 shrink-0">
+                                    <div class="relative w-12 h-12 rounded border border-hextech-gold overflow-hidden shrink-0">
+                                        <img src="${passiveIcon}" alt="${champ.passive.name}" class="w-full h-full object-cover">
+                                        <span class="absolute bottom-0 right-0 bg-hextech-bgDark text-hextech-gold text-[10px] font-bold px-1">P</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm text-hextech-goldLight">${champ.passive.name}</h4>
+                                        <span class="text-[10px] text-hextech-blue">Compétence Passive</span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <p class="text-xs text-hextech-goldLight/80 leading-relaxed">${champ.passive.description.replace(/<[^>]*>?/gm, '')}</p>
+                                </div>
+                            </div>
+
+                            <!-- Q, W, E, R Spells -->
+                            ${champ.spells.map((spell, index) => {
+                                const keys = ['Q', 'W', 'E', 'R'];
+                                const spellIcon = `${CONFIG.baseUrl}/cdn/${appState.version}/img/spell/${spell.image.full}`;
+                                const cooldowns = spell.cooldownBurn || 'N/A';
+                                const costs = spell.costBurn || 'Gratuit';
+
+                                return `
+                                    <div class="flex flex-col sm:flex-row gap-4 p-3.5 bg-hextech-bgDark/60 rounded border border-hextech-gold/20 hover:border-hextech-blue/50 transition-all">
+                                        <div class="flex items-center gap-3 sm:w-48 shrink-0">
+                                            <div class="relative w-12 h-12 rounded border border-hextech-gold overflow-hidden shrink-0">
+                                                <img src="${spellIcon}" alt="${spell.name}" class="w-full h-full object-cover">
+                                                <span class="absolute bottom-0 right-0 bg-hextech-bgDark text-hextech-gold text-[10px] font-bold px-1 border-tl border-hextech-gold">${keys[index]}</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-sm text-hextech-goldLight">${spell.name}</h4>
+                                                <span class="text-[10px] text-hextech-blue">Sort [${keys[index]}]</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow space-y-1">
+                                            <p class="text-xs text-hextech-goldLight/80 leading-relaxed">${spell.description.replace(/<[^>]*>?/gm, '')}</p>
+                                            <div class="flex gap-4 text-[10px] text-hextech-gold/60 pt-1">
+                                                <span><i class="fa-regular fa-clock"></i> Recharge: ${cooldowns}s</span>
+                                                <span><i class="fa-solid fa-droplet text-blue-400"></i> Coût: ${costs}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
             `;
         }
 
-        // Close modal on background click
-        window.onclick = function(event) {
-            const modal = document.getElementById('championModal');
+        // Close Modal
+        function closeModal() {
+            const modal = document.getElementById('champion-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Toggle Favorites Persistence
+        function toggleFavorite(id) {
+            const index = appState.favorites.indexOf(id);
+            if (index > -1) {
+                appState.favorites.splice(index, 1);
+                showToast("Champion retiré des favoris.");
+            } else {
+                appState.favorites.push(id);
+                showToast("Champion ajouté aux favoris !");
+            }
+
+            localStorage.setItem('hextech_favs_v2', JSON.stringify(appState.favorites));
+            updateFavCount();
+            filterChampions();
+            renderFavorites();
+        }
+
+        function updateFavCount() {
+            document.getElementById('fav-count').textContent = appState.favorites.length;
+        }
+
+        // Render Favorites
+        function renderFavorites() {
+            const grid = document.getElementById('favorites-grid');
+            const empty = document.getElementById('favorites-empty');
+
+            const favChamps = appState.allChampions.filter(c => appState.favorites.includes(c.id));
+
+            if (favChamps.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            grid.innerHTML = favChamps.map(champ => {
+                const iconUrl = `${CONFIG.baseUrl}/cdn/${appState.version}/img/champion/${champ.image.full}`;
+                return `
+                    <div class="hextech-card rounded-lg overflow-hidden group cursor-pointer relative flex flex-col" onclick="openModal('${champ.id}')">
+                        <button onclick="event.stopPropagation(); toggleFavorite('${champ.id}')" 
+                                class="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-hextech-bgDark/80 border border-amber-400 flex items-center justify-center text-xs text-amber-400">
+                            <i class="fa-solid fa-star"></i>
+                        </button>
+                        <div class="relative overflow-hidden aspect-[4/5] bg-hextech-bgDark">
+                            <img src="${iconUrl}" alt="${champ.name}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-hextech-cardBg via-transparent to-transparent opacity-80"></div>
+                        </div>
+                        <div class="p-3 border-t border-hextech-gold/20">
+                            <h3 class="font-lol font-bold text-base text-hextech-goldLight">${champ.name}</h3>
+                            <p class="text-[11px] text-hextech-gold/70 truncate capitalize">${champ.title}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Add Champion to Comparator Slot
+        async function addToCompare(id) {
+            if (appState.compareSlots[0] === id || appState.compareSlots[1] === id) {
+                showToast("Ce champion est déjà dans le comparateur.");
+                return;
+            }
+
+            if (!appState.compareSlots[0]) {
+                appState.compareSlots[0] = id;
+            } else if (!appState.compareSlots[1]) {
+                appState.compareSlots[1] = id;
+            } else {
+                appState.compareSlots[0] = id;
+            }
+
+            await updateCompareSlots();
+            switchTab('compare');
+            closeModal();
+            showToast("Champion ajouté au comparateur.");
+        }
+
+        // Render Comparator Slots
+        async function updateCompareSlots() {
+            const count = appState.compareSlots.filter(Boolean).length;
+            document.getElementById('compare-count').textContent = count;
+
+            for (let index of [0, 1]) {
+                const slotEl = document.getElementById(`compare-slot-${index}`);
+                const champId = appState.compareSlots[index];
+
+                if (!champId) {
+                    slotEl.innerHTML = `
+                        <div class="text-center space-y-3">
+                            <i class="fa-solid fa-plus-circle text-4xl text-hextech-gold/40"></i>
+                            <p class="font-lol text-hextech-gold/70 text-sm">Emplacement Libère</p>
+                            <p class="text-xs text-hextech-gold/40">Ouvrez une fiche champion et cliquez sur "Comparer"</p>
+                        </div>
+                    `;
+                } else {
+                    slotEl.innerHTML = `<div class="hex-loader"></div>`;
+                    const champ = await fetchChampionDetails(champId);
+                    if (!champ) continue;
+
+                    const iconUrl = `${CONFIG.baseUrl}/cdn/${appState.version}/img/champion/${champ.image.full}`;
+
+                    slotEl.innerHTML = `
+                        <div class="w-full space-y-5">
+                            <div class="flex justify-between items-center border-b border-hextech-gold/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <img src="${iconUrl}" class="w-12 h-12 rounded border border-hextech-gold">
+                                    <div>
+                                        <h3 class="font-lol font-bold text-lg text-hextech-goldLight">${champ.name}</h3>
+                                        <p class="text-xs text-hextech-blue">${champ.tags.join(', ')}</p>
+                                    </div>
+                                </div>
+                                <button onclick="removeFromCompare(${index})" class="text-hextech-gold/60 hover:text-red-400 p-2">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+
+                            <!-- Compare Stats -->
+                            <div class="space-y-2 text-xs">
+                                <h4 class="font-bold text-hextech-gold uppercase tracking-wider">Statistiques</h4>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between"><span>PV Base:</span><span class="font-bold text-emerald-400">${champ.stats.hp}</span></div>
+                                    <div class="flex justify-between"><span>Attaque:</span><span class="font-bold text-amber-400">${champ.stats.attackdamage}</span></div>
+                                    <div class="flex justify-between"><span>Armure:</span><span class="font-bold text-blue-400">${champ.stats.armor}</span></div>
+                                    <div class="flex justify-between"><span>Vitesse:</span><span class="font-bold text-teal-400">${champ.stats.movespeed}</span></div>
+                                    <div class="flex justify-between"><span>Portée:</span><span class="font-bold text-purple-400">${champ.stats.attackrange}</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Compare Spells -->
+                            <div class="space-y-2 text-xs">
+                                <h4 class="font-bold text-hextech-gold uppercase tracking-wider">Compétences</h4>
+                                <div class="space-y-2">
+                                    <div class="p-2 bg-hextech-bgDark/80 rounded border border-hextech-gold/20 flex items-center gap-2">
+                                        <span class="font-bold text-hextech-blue w-4">P</span>
+                                        <span class="font-semibold text-hextech-goldLight truncate">${champ.passive.name}</span>
+                                    </div>
+                                    ${champ.spells.map((s, i) => `
+                                        <div class="p-2 bg-hextech-bgDark/80 rounded border border-hextech-gold/20 flex items-center gap-2">
+                                            <span class="font-bold text-hextech-blue w-4">${['Q','W','E','R'][i]}</span>
+                                            <span class="font-semibold text-hextech-goldLight truncate">${s.name}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function removeFromCompare(index) {
+            appState.compareSlots[index] = null;
+            updateCompareSlots();
+        }
+
+        // Quiz Question Generator
+        function initQuizQuestion() {
+            if (appState.allChampions.length === 0) return;
+
+            const randomChamp = appState.allChampions[Math.floor(Math.random() * appState.allChampions.length)];
+            const questionText = `À quel champion appartient le titre suivant : <br><strong class="text-hextech-blue font-bold text-lg">"${randomChamp.title.toUpperCase()}"</strong> ?`;
+            
+            // Generate Options
+            let options = [randomChamp];
+            while (options.length < 4) {
+                const opt = appState.allChampions[Math.floor(Math.random() * appState.allChampions.length)];
+                if (!options.find(o => o.id === opt.id)) {
+                    options.push(opt);
+                }
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            appState.quiz.currentQuestion = {
+                correct: randomChamp.id,
+                options: options
+            };
+            appState.quiz.answered = false;
+
+            const content = document.getElementById('quiz-card-content');
+            content.innerHTML = `
+                <div class="space-y-4 text-center">
+                    <p class="text-sm sm:text-base text-hextech-goldLight leading-relaxed">${questionText}</p>
+                    <span class="inline-block text-[10px] text-hextech-gold/60 border border-hextech-gold/30 rounded px-2 py-0.5 uppercase">Indice Rôle : ${randomChamp.tags.join(', ')}</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    ${options.map(opt => `
+                        <button onclick="submitQuizAnswer('${opt.id}')" 
+                                class="quiz-opt-btn btn-hextech p-3 rounded text-sm font-semibold flex items-center justify-between transition-all" 
+                                data-id="${opt.id}">
+                            <span>${opt.name}</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function submitQuizAnswer(selectedId) {
+            if (appState.quiz.answered) return;
+            appState.quiz.answered = true;
+
+            const correctId = appState.quiz.currentQuestion.correct;
+            const buttons = document.querySelectorAll('.quiz-opt-btn');
+
+            buttons.forEach(btn => {
+                const id = btn.dataset.id;
+                if (id === correctId) {
+                    btn.classList.add('bg-emerald-600/80', 'border-emerald-400', 'text-white');
+                } else if (id === selectedId) {
+                    btn.classList.add('bg-rose-600/80', 'border-rose-400', 'text-white');
+                }
+            });
+
+            if (selectedId === correctId) {
+                appState.quiz.score += 100;
+                appState.quiz.streak += 1;
+                showToast("Excellente réponse ! +100 PTS");
+            } else {
+                appState.quiz.streak = 0;
+                showToast("Mauvaise réponse...");
+            }
+
+            document.getElementById('quiz-score').textContent = appState.quiz.score;
+            document.getElementById('quiz-streak').textContent = `${appState.quiz.streak} ??`;
+
+            setTimeout(() => {
+                initQuizQuestion();
+            }, 1800);
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            msgEl.textContent = msg;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
+
